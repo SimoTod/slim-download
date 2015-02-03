@@ -6,11 +6,14 @@ class DownloadView extends \Slim\View
     public function render($path, $data = NULL) 
     {
         $app = \Slim\Slim::getInstance();
+		
+		$contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
+		$filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
 
         $app->response->setStatus(200);
-        $app->response()->header('Content-Type', 'application/octet-stream');
+        $app->response()->header('Content-Type', $contentType);
         $app->response()->header('Content-Transfer-Encoding', 'Binary');
-        $app->response()->header('Content-disposition', 'attachment; filename="'.basename($path).'"');
+        $app->response()->header('Content-disposition', 'attachment; filename="'.$filename.'"');
         $app->response()->header('Content-Length', filesize($path));
         $app->response()->header('Expires', '0');
         $app->response()->header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');

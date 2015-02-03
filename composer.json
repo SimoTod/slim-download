@@ -1,7 +1,6 @@
 {
     "name": "simotod/slim-download",
     "type": "library",
-    "version": "1.0.0",
     "description": "Slim extension to implement download view render",
     "keywords": ["slim","view","download"],
     "homepage": "https://github.com/SimoTod/slim-download",
