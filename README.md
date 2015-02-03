@@ -19,7 +19,7 @@ Using composer you can add use this as your composer.json
 ```php
     require 'vendor/autoload.php';
 
-    $app = new \Slim\Slim();
+    $app = new \Slim\Slim(); 
 
 	$app->get('/download', function () use ($app) {
 		//Do some stuff here
