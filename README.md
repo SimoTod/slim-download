@@ -8,6 +8,8 @@ It can be used to check the user permissions before of permits the downloading o
     require 'vendor/autoload.php';
 
     $app = new \Slim\App(); 
+	
+	$app->register(new \SimoTod\SlimDownload\Download());
 
 	$app->get('/download', function ($request, $response, $args) {
 		//Do some stuff here	
