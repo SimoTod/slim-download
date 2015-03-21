@@ -6,9 +6,9 @@ class DownloadView extends \Slim\View
     public function render($path, $data = NULL) 
     {
         $app = \Slim\Slim::getInstance();
-		
-		$contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
-		$filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
+        
+        $contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
+        $filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
 
         $app->response->setStatus(200);
         $app->response()->header('Content-Type', $contentType);
@@ -22,7 +22,7 @@ class DownloadView extends \Slim\View
         ob_clean();
         ob_start();
         readfile($path);
-        $content = ob_get_contents();
+        $content = ob_get_clean();
 
         $app->response()->body($content);
 
