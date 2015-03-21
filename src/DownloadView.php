@@ -1,31 +1,33 @@
 <?php
 namespace SimoTod\SlimDownload;
 
-class DownloadView extends \Slim\View 
+class DownloadView implements \Pimple\ServiceProviderInterface
 {
-    public function render($path, $data = NULL) 
+	protected response;
+	
+	protected $app;
+	
+    public function register(\Slim\App $container)
     {
-        $app = \Slim\Slim::getInstance();
+        $container['view'] = $this;
+		$this->app = $container;
+    }
+    
+    public function render($path, $data = []) 
+    {        
+        $contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
+        $filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
 		
-		$contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
-		$filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
+		$newResponse = $this->app->response->withStatus(200)
+			->withHeader('Content-Type', $contentType)
+			->withAddedHeader('Content-Transfer-Encoding', 'Binary');
+			->withAddedHeader('Content-disposition', 'attachment; filename="'.$filename.'"')
+			->withAddedHeader('Content-Length', filesize($path))
+			->withAddedHeader('Expires', '0')
+			->withAddedHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0')
+			->withAddedHeader('Pragma', 'public')
+			->withBody(new Body(fopen($path, 'r')));
 
-        $app->response->setStatus(200);
-        $app->response()->header('Content-Type', $contentType);
-        $app->response()->header('Content-Transfer-Encoding', 'Binary');
-        $app->response()->header('Content-disposition', 'attachment; filename="'.$filename.'"');
-        $app->response()->header('Content-Length', filesize($path));
-        $app->response()->header('Expires', '0');
-        $app->response()->header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');
-        $app->response()->header('Pragma', 'public');
-
-        ob_clean();
-        ob_start();
-        readfile($path);
-        $content = ob_get_contents();
-
-        $app->response()->body($content);
-
-        $app->stop();
+        $this->app->stop($newResponse);
     }
 }
