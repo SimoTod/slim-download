@@ -30,6 +30,8 @@ Using composer you can add use this as your composer.json
 		$app->render($filepath);
 	});
 	
+	$app->run();
+	
 ```
 
 ###example method
