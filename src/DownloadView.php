@@ -3,7 +3,7 @@ namespace SimoTod\SlimDownload;
 
 class DownloadView extends \Slim\View 
 {
-    public function render($path, $data = NULL) 
+    public function render($path, $data = []) 
     {
         $app = \Slim\Slim::getInstance();
         
