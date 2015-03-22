@@ -27,7 +27,7 @@ class Download implements \Pimple\ServiceProviderInterface
         ob_start();
         readfile($path);
         $content = ob_get_clean();
-        $newResponse = $newResponse->withBody($content);
+        $newResponse = $newResponse->write($content);
 
         return $newResponse;
     }
