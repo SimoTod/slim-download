@@ -7,6 +7,11 @@ class DownloadView extends \Slim\View
     {
         $app = \Slim\Slim::getInstance();
         
+		if(!file_exists($path))  {
+			$app->notFound();
+			return;
+		}
+		
         $contentType = $data["CONTENT_TYPE"] ? $data["CONTENT_TYPE"] : 'application/octet-stream';
         $filename = $data["FILENAME"] ? $data["FILENAME"] : basename($path);
 
